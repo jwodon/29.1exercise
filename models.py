@@ -1,10 +1,11 @@
 """Models for Blogly."""
 
 from flask_sqlalchemy import SQLAlchemy
+import datetime
 
 db = SQLAlchemy()
 
-DEFAULT_IMAGE_URL = "https://images.unsplash.com/photo-1560525821-d5615ef80c69?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+DEFAULT_IMAGE_URL = "https://source.unsplash.com/random"
 
 
 class User(db.Model):
@@ -15,9 +16,24 @@ class User(db.Model):
     id = db.Column(db.Integer,
                    primary_key=True,
                    autoincrement=True)
-    first_name = db.Column(db.String(50), nullable=False,)
-    last_name = db.Column(db.String(50), nullable=False,)
-    image_url = db.Column(db.String(255), nullable=False, default=DEFAULT_IMAGE_URL)
+    first_name = db.Column(db.Text, nullable=False,)
+    last_name = db.Column(db.Text, nullable=False,)
+    image_url = db.Column(db.Text, nullable=False, default=DEFAULT_IMAGE_URL)
+
+    posts =  db.relationship('Post', backref="user", cascade='all, delete-orphan')
+
+class Post(db.Model):
+    """Post"""
+
+    __tablename__ = "posts"
+
+    id = db.Column(db.Integer,
+                   primary_key=True,
+                   autoincrement=True)
+    title = db.Column(db.Text, nullable=False,)
+    content = db.Column(db.Text, nullable=False,)
+    created_at = db.Column(db.DateTime, nullable=False, default=datetime.datetime.now)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
 
 
 def connect_db(app):
