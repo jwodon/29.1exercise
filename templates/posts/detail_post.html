@@ -7,6 +7,17 @@ content %}
         <p>{{post.content}}</p>
         <p>By {{ user.first_name }} {{ user.last_name }}</p>
 
+        {% if post.tags %}
+        <p>
+            <b>Tags:</b>
+            {% for tag in post.tags %}
+            <a href="/tags/detail_tag/{{tag.id}}"
+                ><span class="badge badge-primary" style="background-color: #007bff; color: #fff;">{{tag.name}}</span></a
+            >
+            {% endfor %}
+        </p>
+        {% endif %}
+
         <div class="btn-group" role="group" aria-label="Post Actions">
             <form method="POST" action="/posts/detail_post/{{ post.id }}">
                 <button
@@ -36,4 +47,3 @@ content %}
 </div>
 
 {% endblock %}
-

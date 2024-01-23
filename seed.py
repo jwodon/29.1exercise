@@ -1,4 +1,4 @@
-from models import User, Post, db
+from models import User, Post, db, Tag, PostTag
 from app import app
 
 with app.app_context():
@@ -39,3 +39,19 @@ with app.app_context():
     db.session.add_all([post1, post2, post3, post4, post5])
     db.session.commit()
 
+    #tags
+
+    tag1 = Tag(name='Cool')
+    tag2 = Tag(name='Dope')
+    tag3 = Tag(name='Hungry')
+
+    db.session.add_all([tag1, tag2, tag3])
+    db.session.commit()
+
+    # PostTags
+    pt1 = PostTag(post_id=1, tag_id=1)
+    pt2 = PostTag(post_id=1, tag_id=2)
+    pt3 = PostTag(post_id=2, tag_id=3)
+
+    db.session.add_all([pt1, pt2, pt3])
+    db.session.commit()
